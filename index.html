@@ -1,17 +1,66 @@
-
 <!DOCTYPE HTML>  
 <html>
 <head>
 <style>
-.error {color: #FF0000;}
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.error {
+  color: #FF0000;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
 </style>
 </head>
 <body>  
 
 <?php
 // define variables and set to empty values
-$nameErr = $emailErr = $genderErr = $websiteErr = "";
-$name = $email = $gender = $comment = $website = "";
+$nameErr = $emailErr = $genderErr = "";
+$name = $email = $gender = $comment = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["name"])) {
@@ -24,12 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailErr = "Email is required";
   } else {
     $email = test_input($_POST["email"]);
-  }
-    
-  if (empty($_POST["website"])) {
-    $website = "";
-  } else {
-    $website = test_input($_POST["website"]);
   }
 
   if (empty($_POST["comment"])) {
@@ -53,41 +96,54 @@ function test_input($data) {
 }
 ?>
 
-<h2>PHP Form Validation Example</h2>
-<p><span class="error">* required field</span></p>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-  Name: <input type="text" name="name">
-  <span class="error">* <?php echo $nameErr;?></span>
-  <br><br>
-  E-mail: <input type="text" name="email">
-  <span class="error">* <?php echo $emailErr;?></span>
-  <br><br>
-  Website: <input type="text" name="website">
-  <span class="error"><?php echo $websiteErr;?></span>
-  <br><br>
-  Comment: <textarea name="comment" rows="5" cols="40"></textarea>
-  <br><br>
-  Gender:
-  <input type="radio" name="gender" value="female">Female
-  <input type="radio" name="gender" value="male">Male
-  <input type="radio" name="gender" value="other">Other
-  <span class="error">* <?php echo $genderErr;?></span>
-  <br><br>
-  <input type="submit" name="submit" value="Submit">  
-</form>
+<div class="container">
+  <h2>PHP Form Validation Example</h2>
+  <p><span class="error">* required field</span></p>
+  <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name">
+      <span class="error">* <?php echo $nameErr;?></span>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">E-mail:</label>
+      <input type="text" name="email" id="email">
+      <span class="error">* <?php echo $emailErr;?></span>
+    </div>
+    
+    <div class="form-group">
+      <label for="website">Website:</label>
+      <input type="text" name="website" id="website">
+    </div>
+    
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea name="comment" id="comment" rows="5" cols="40"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Gender:</label>
+      <input type="radio" name="gender" value="female">Female
+      <input type="radio" name="gender" value="male">Male
+      <input type="radio" name="gender" value="other">Other
+      <span class="error">* <?php echo $genderErr;?></span>
+    </div>
+    
+    <button type="submit" name="submit">Submit</button>  
+  </form>
 
-<?php
-echo "<h2>Your Input:</h2>";
-echo $name;
-echo "<br>";
-echo $email;
-echo "<br>";
-echo $website;
-echo "<br>";
-echo $comment;
-echo "<br>";
-echo $gender;
-?>
+  <?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "<h2>Your Input:</h2>";
+    echo "Name: " . $name . "<br>";
+    echo "E-mail: " . $email . "<br>";
+    echo "Website: " . $website . "<br>";
+    echo "Comment: " . $comment . "<br>";
+    echo "Gender: " . $gender . "<br>";
+  }
+  ?>
+</div>
 
 </body>
 </html>
